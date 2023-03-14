@@ -71,6 +71,9 @@ void main() {
 		if(cc > 1.0){
 			discard;
 		}
+		if(cc < vPointSourceID/13.0){
+		    discard;
+		}
 	#endif
 
 	#if defined paraboloid_point_shape
