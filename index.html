@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<title>Viewer</title>
+
+	<link rel="stylesheet" type="text/css" href="./build/potree/potree.css">
+	<link rel="stylesheet" type="text/css" href="./libs/jquery-ui/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="./libs/openlayers3/ol.css">
+	<link rel="stylesheet" type="text/css" href="./libs/spectrum/spectrum.css">
+	<link rel="stylesheet" type="text/css" href="./libs/jstree/themes/mixed/style.css">
+</head>
+
+<body>
+	<script src="./libs/jquery/jquery-3.1.1.min.js"></script>
+	<script src="./libs/spectrum/spectrum.js"></script>
+	<script src="./libs/jquery-ui/jquery-ui.min.js"></script>
+	<script src="./libs/other/BinaryHeap.js"></script>
+	<script src="./libs/tween/tween.min.js"></script>
+	<script src="./libs/d3/d3.js"></script>
+	<script src="./libs/proj4/proj4.js"></script>
+	<script src="./libs/openlayers3/ol.js"></script>
+	<script src="./libs/i18next/i18next.js"></script>
+	<script src="./libs/jstree/jstree.js"></script>
+	<script src="./build/potree/potree.js"></script>
+	<script src="./libs/plasio/js/laslaz.js"></script>
+
+	<!-- INCLUDE ADDITIONAL DEPENDENCIES HERE -->
+	<!-- INCLUDE SETTINGS HERE -->
+	<script src="./config.js"></script>
+	<script src="./cellData.js"></script>
+
+	<div class="potree_container" style="position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; ">
+		<div id="potree_render_area"></div>
+		<div id="potree_sidebar_container"> </div>
+	</div>
+
+
+
+	<script type="module">
+
+		function straight(viewer){
+			// viewer.setFrontView()
+			viewer.scene.view.yaw = 0;
+			viewer.scene.view.pitch = 0;
+			// viewer.setView("F")
+			// viewer.scene.view.yaw = 1.9* Math.PI / 2
+		}
+
+
+
+	import * as THREE from "./libs/three.js/build/three.module.js";
+		window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
+
+		viewer.setEDLEnabled(false); //disable this so that transparency in the meshes works fine
+		viewer.setFOV(60);
+		viewer.setPointBudget(4_000_000);
+		viewer.loadSettingsFromURL();
+
+		viewer.setDescription("merfish data: Brad Lowell lab (75million spots)");
+
+		viewer.loadGUI(() => {
+			viewer.setLanguage('en');
+			$("#menu_appearance").next().show();
+			viewer.toggleSidebar();
+		});
+
+
+		// start loading all point clouds asynchronously, get a promise for each one that resolves when it's loaded
+		let url = './pointclouds/merfish_2.0/octree/metadata.json';
+        Potree.loadPointCloud(url, 'merfish', onloaded)
+
+
+		function onloaded(e){
+			let scene = viewer.scene;
+			let pointcloud = e.pointcloud;
+			let material = pointcloud.material;
+
+			material.size = .03;
+			material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
+			material.shape = Potree.PointShape.CIRCLE
+			material.activeAttributeName = "rgba";
+
+
+			scene.addPointCloud(pointcloud);
+			scene.view.position.set(171, 1041, 17921);
+			scene.view.lookAt(0, 0, 0);
+		}
+
+
+	</script>
+
+
+  </body>
+</html>
