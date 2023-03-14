@@ -2,3 +2,4 @@
 /build/
 /.idea/
 /pointclouds/
+/notebooks/.ipynb_checkpoints/
