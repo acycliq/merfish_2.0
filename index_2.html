@@ -130,6 +130,7 @@
         import data_loader from './dataLoader.module.js'
 
         window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
+        let scene = viewer.scene;
 
 		viewer.setEDLEnabled(false); //disable this so that transparency in the meshes works fine
 		viewer.setFOV(60);
@@ -137,6 +138,8 @@
 		viewer.loadSettingsFromURL();
 
 		viewer.setDescription("merfish data: Brad Lowell lab (75million spots)");
+        scene.view.position.set(171, 1041, 17921);
+        scene.view.lookAt(0, 0, 0);
 
 		// viewer.loadGUI(() => {
 		// 	viewer.setLanguage('en');
