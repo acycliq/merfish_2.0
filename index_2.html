@@ -1,8 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<title>Viewer</title>
+
+	<link rel="stylesheet" type="text/css" href="./build/potree/potree.css">
+	<link rel="stylesheet" type="text/css" href="./libs/jquery-ui/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="./libs/openlayers3/ol.css">
+	<link rel="stylesheet" type="text/css" href="./libs/spectrum/spectrum.css">
+	<link rel="stylesheet" type="text/css" href="./libs/jstree/themes/mixed/style.css">
 
     <!--jquery -->
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -14,14 +24,21 @@
 
 </head>
 <body>
-    <!--jquery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script src="./libs/jquery/jquery-3.1.1.min.js"></script>
+	<script src="./libs/spectrum/spectrum.js"></script>
+	<script src="./libs/jquery-ui/jquery-ui.min.js"></script>
+	<script src="./libs/other/BinaryHeap.js"></script>
+	<script src="./libs/tween/tween.min.js"></script>
+	<script src="./libs/d3/d3.js"></script>
+	<script src="./libs/proj4/proj4.js"></script>
+	<script src="./libs/openlayers3/ol.js"></script>
+	<script src="./libs/i18next/i18next.js"></script>
+	<script src="./libs/jstree/jstree.js"></script>
+	<script src="./build/potree/potree.js"></script>
+	<script src="./libs/plasio/js/laslaz.js"></script>
 
     <!-- bootstrap -->
     <script src="data/lib/js/bootstrap.min.js"></script>
-
-    <!--d3 -->
-    <script src='https://d3js.org/d3.v4.min.js'></script>
 
     <!--user scripts -->
     <script src='data/progress.js'></script>
@@ -33,18 +50,18 @@
     </div>
 
 
-    <div id="stats-container" class="stack-top">
-    <!--    <div id="chart"></div>-->
-        <div class="loading">
-            <div id="container"></div>
-            <div id="loading" class="loading"><span>loading...</span></div>
-            <div id="loading_perc" class="loading"><span>loading...</span></div>
-            <div id="loading_mb" class="loading"><span>loading...</span></div>
-            <div id="done" class="loading"><span></span></div>
+    <div class="container-fluid" id="preloader">
+
+        <div id="stats-container" class="stack-top">
+            <div class="loading">
+                <div id="container"></div>
+                <div id="loading" class="loading"><span>loading...</span></div>
+                <div id="loading_perc" class="loading"><span>loading...</span></div>
+                <div id="loading_mb" class="loading"><span>loading...</span></div>
+                <div id="done" class="loading"><span></span></div>
         </div>
     </div>
 
-    <div class="container-fluid" id="preloader">
         <div class="col-sm-12">
             <div class="midplaced">
                 <div class="col-sm-6">
@@ -104,6 +121,21 @@
         import * as THREE from "./libs/three.js/build/three.module.js";
         import config from "./config.module.js"
         import data_loader from './dataLoader.module.js'
+
+        window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
+
+		viewer.setEDLEnabled(false); //disable this so that transparency in the meshes works fine
+		viewer.setFOV(60);
+		viewer.setPointBudget(2_000_000);
+		viewer.loadSettingsFromURL();
+
+		viewer.setDescription("merfish data: Brad Lowell lab (75million spots)");
+
+		// viewer.loadGUI(() => {
+		// 	viewer.setLanguage('en');
+		// 	$("#menu_appearance").next().show();
+		// 	viewer.toggleSidebar();
+		// });
 
         function run() {
             console.log('app starts');
