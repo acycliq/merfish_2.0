@@ -138,14 +138,37 @@
 		viewer.loadSettingsFromURL();
 
 		viewer.setDescription("merfish data: Brad Lowell lab (75million spots)");
-        scene.view.position.set(171, 1041, 17921);
-        scene.view.lookAt(0, 0, 0);
+
+
+        let url = './pointclouds/merfish_2.0/octree/metadata.json';
+        Potree.loadPointCloud(url, 'merfish', onloaded)
+
+		function onloaded(e){
+			let scene = viewer.scene;
+			let pointcloud = e.pointcloud;
+			let material = pointcloud.material;
+
+			material.size = .002;
+			material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
+			material.shape = Potree.PointShape.CIRCLE
+			material.activeAttributeName = "rgba";
+
+
+			scene.addPointCloud(pointcloud);
+			scene.view.position.set(171, 1041, 17921);
+			scene.view.lookAt(0, 0, 0);
+
+			run()
+
+		}
 
 		// viewer.loadGUI(() => {
 		// 	viewer.setLanguage('en');
 		// 	$("#menu_appearance").next().show();
 		// 	viewer.toggleSidebar();
 		// });
+
+
 
         function run() {
             console.log('app starts');
@@ -179,7 +202,7 @@
             return fName.split('.')[0]
         }
 
-        run()
+
     </script>
 </body>
 </html>
