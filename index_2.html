@@ -117,6 +117,13 @@
         <script>$('#wait_chart').hide()</script>
     </div>
 
+    <script>
+        function removePreloader() {
+            $('#preloader').delay(350).fadeOut(250); // will fade out the white DIV that covers the website.
+            $('body').delay(350).css({'overflow': 'visible'});
+        }
+    </script>
+
     <script type="module">
         import * as THREE from "./libs/three.js/build/three.module.js";
         import config from "./config.module.js"
@@ -169,9 +176,7 @@
             return fName.split('.')[0]
         }
 
-
         run()
-
     </script>
 </body>
 </html>
