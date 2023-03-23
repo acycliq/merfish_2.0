@@ -19,8 +19,9 @@
     <link rel='stylesheet' href='css/index.css'>
 <!--    <script src='viewer/js/index.js'></script>-->
 
-    <script src='./config.js'></script>
+<!--    <script src='./config.js'></script>-->
     <script src='./dataLoader.js'></script>
+    <script src='./stage_cells.js'></script>
     <script src='./streaming-tsv-parser.js'></script>
 </head>
 <body>
@@ -92,10 +93,14 @@
     <script>$('#wait_chart').hide()</script>
 </div>
 
-<script>
+<script type="module">
+    import * as THREE from "./lib/three.js/build/three.module.js";
+    import config from "./config.module.js"
+    import data_loader from './dataLoader.js'
+
     function run() {
         console.log('app starts');
-        configSettings = config();
+        var configSettings = config();
         configSettings.cellData["name"] = "cellData";
         configSettings.geneData["name"] = "geneData";
         // configSettings.cellBoundaries["name"] = "cellBoundaries";
@@ -119,7 +124,7 @@
 
     function strip_url(d) {
         // if the url has / get the last substring
-        fName = d.substring(d.lastIndexOf('/')+1);
+        var fName = d.substring(d.lastIndexOf('/')+1);
 
         // then strip the extension and return the value
         return fName.split('.')[0]
