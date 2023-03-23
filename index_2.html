@@ -130,7 +130,7 @@
         import data_loader from './dataLoader.module.js'
 
         window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
-        let scene = viewer.scene;
+        window.scene = viewer.scene;
 
 		viewer.setEDLEnabled(false); //disable this so that transparency in the meshes works fine
 		viewer.setFOV(60);

@@ -110,7 +110,6 @@ function ellipsoids_2(data, props) {
     ellipsoidData.instancedMesh = INSTANCEDMESH;
     ellipsoidData.LOD_ramp = LOD_ramp;
 
-    removePreloader()
 
     return ellipsoidData
 }
