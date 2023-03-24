@@ -131,6 +131,8 @@
 
         window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
         window.scene = viewer.scene;
+        window.cells = {};
+        window.cellData = [];
 
 		viewer.setEDLEnabled(false); //disable this so that transparency in the meshes works fine
 		viewer.setFOV(60);
@@ -138,6 +140,7 @@
 		viewer.loadSettingsFromURL();
 
 		viewer.setDescription("merfish data: Brad Lowell lab (75million spots)");
+		viewer.renderer
 
 
         let url = './pointclouds/merfish_2.0/octree/metadata.json';

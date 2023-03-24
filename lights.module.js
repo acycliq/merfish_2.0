@@ -37,7 +37,7 @@ function iniLights() {
     // light.shadowDarkness = 0.2;
     viewer.scene.scene.add(light_2);
 
-    add_envmap();
+    // add_envmap();
 
 }
 

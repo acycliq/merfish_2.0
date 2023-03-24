@@ -103,8 +103,8 @@ function ellipsoids_2(data, props) {
 
     }
 
-    viewer.scene.scene.add(INSTANCEDMESH);
-    viewer.scene.scene.add(new THREE.AmbientLight(0x666666));
+
+    // viewer.scene.scene.add(new THREE.AmbientLight(0x666666));
 
     var ellipsoidData = {};
     ellipsoidData.instancedMesh = INSTANCEDMESH;
