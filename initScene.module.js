@@ -16,6 +16,19 @@ function initScene(data){
     removePreloader()
 }
 
+const groupBy = (array, key) => {
+    // from https://learnwithparam.com/blog/how-to-group-by-array-of-objects-using-a-key/
+    // Return the end result
+    return array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+            currentValue
+        );
+        // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+        return result;
+    }, {}); // empty object is the initial value for result object
+};
+
 function onMouseMove(event) {
     const mouse = {
         x: (event.clientX / viewer.renderer.domElement.clientWidth) * 2 - 1,
@@ -48,23 +61,25 @@ function onMouseMove(event) {
 
 function cellMouseHover(label) {
     console.log('Hovering over cell: ' + label)
-    d3.json("py/" + label + ".json", outer(label));
+    d3.json("py/cellData/" + label + ".json", outer(label));
 }
 
 
 function outer(label){
     return function onCellMouseHover(data) {
-        var centroid = cellData.filter(d => d.label === label)[0]
-        var lines = make_line(data, centroid)
+        var targetCell = cellData.filter(d => d.label === label)[0]
+        var lines = make_line(data, targetCell)
         lines.map(d => viewer.scene.scene.add(d));
+        var spots = groupBy(data, 'gene');
+        renderDataTable(spots, targetCell)
     }
 }
 
 
-function make_line(obj, centroid){
+function make_line(obj, targetCell){
     var arr = Object.entries(obj).map(d => d[1]).flat()
     var out = arr.map(d => {
-        return make_line_helper(d, centroid)
+        return make_line_helper(d, targetCell)
     });
     return out
 }
@@ -74,11 +89,11 @@ function remove_line(){
     scene.children.filter(d => d.type === "Line").forEach(el => scene.remove(el))
 }
 
-function make_line_helper(spot_coords, centroid) {
+function make_line_helper(spot_coords, targetCell) {
     var points = [];
     points.push(
         new THREE.Vector3(spot_coords.x, spot_coords.y, spot_coords.z),
-        new THREE.Vector3(centroid.x, centroid.y, centroid.z)
+        new THREE.Vector3(targetCell.x, targetCell.y, targetCell.z)
     )
     var geometry = new THREE.BufferGeometry().setFromPoints(points);
     // CREATE THE LINE

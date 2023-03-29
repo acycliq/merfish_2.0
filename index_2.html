@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="data/lib/css/bootstrap.min.css">
     <link rel="stylesheet" href="data/css/progress.css">
     <link rel='stylesheet' href='data/css/index.css'>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
 
 </head>
 <body>
@@ -36,17 +38,25 @@
 	<script src="./libs/jstree/jstree.js"></script>
 	<script src="./build/potree/potree.js"></script>
 	<script src="./libs/plasio/js/laslaz.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
     <!-- bootstrap -->
     <script src="data/lib/js/bootstrap.min.js"></script>
 
     <!--user scripts -->
+    <script src='dt.js'></script>
     <script src='data/progress.js'></script>
     <script src='./data/streaming-tsv-parser.js'></script>
 
     <div class="potree_container" style="position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; ">
         <div id="potree_render_area"></div>
         <div id="potree_sidebar_container"> </div>
+    </div>
+
+    <div class="tab-pane active fade in" id="bottom_left_control">
+        <div class="container-fluid col-sm-12" style="background-color: darkgrey;">
+            <table id='dtTable' class='display compact custom' data-page-length='5' width=100%></table>
+        </div>
     </div>
 
 
@@ -207,5 +217,6 @@
 
 
     </script>
+
 </body>
 </html>
