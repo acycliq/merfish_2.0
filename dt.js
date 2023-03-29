@@ -5,7 +5,6 @@ function renderDataTable(spots, cell) {
     var mydata2 = [];
 
     for (gene_name in spots){
-        console.log(gene_name)
         mydata.push({
             "Genenames": gene_name,
             "CellGeneCount": spots[gene_name].length.toFixed(2),

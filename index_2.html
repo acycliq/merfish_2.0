@@ -31,7 +31,7 @@
 	<script src="./libs/jquery-ui/jquery-ui.min.js"></script>
 	<script src="./libs/other/BinaryHeap.js"></script>
 	<script src="./libs/tween/tween.min.js"></script>
-	<script src="./libs/d3/d3.js"></script>
+<!--	<script src="./libs/d3/d3.js"></script>-->
 	<script src="./libs/proj4/proj4.js"></script>
 	<script src="./libs/openlayers3/ol.js"></script>
 	<script src="./libs/i18next/i18next.js"></script>
@@ -44,7 +44,10 @@
     <script src="data/lib/js/bootstrap.min.js"></script>
 
     <!--user scripts -->
+    <script src="d3.v4.js"></script>
     <script src='dt.js'></script>
+    <script src='donut.js'></script>
+    <script src="classConfig.js"></script>
     <script src='data/progress.js'></script>
     <script src='./data/streaming-tsv-parser.js'></script>
 
@@ -53,9 +56,27 @@
         <div id="potree_sidebar_container"> </div>
     </div>
 
-    <div class="tab-pane active fade in" id="bottom_left_control">
+    <div class="tab-pane active fade in" id="dataTableControl">
         <div class="container-fluid col-sm-12" style="background-color: darkgrey;">
             <table id='dtTable' class='display compact custom' data-page-length='5' width=100%></table>
+        </div>
+    </div>
+
+    <div class='tab-pane active fade in' id='donutChartControl'>
+        <div class='container-fluid'>
+            <div class='row' style='background-color: rgba(255, 255, 255, 0.0)'>
+                <div class='chart-wrapper'>
+                    <div class='chart-stage'>
+                        <div class='col-sm-12'>
+                            <div class='chart-stage' style='background-color: rgba(255, 255, 255, 0.0)'>
+                                <div class='summary' id='piechart'>
+                                    <svg width='300' height='180'></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

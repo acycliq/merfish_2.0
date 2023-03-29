@@ -72,6 +72,7 @@ function outer(label){
         lines.map(d => viewer.scene.scene.add(d));
         var spots = groupBy(data, 'gene');
         renderDataTable(spots, targetCell)
+        donutchart(targetCell)
     }
 }
 
