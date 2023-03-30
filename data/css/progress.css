@@ -11,9 +11,9 @@ body {
 }
 
 #preloader {
-  background: #ECF0F1;
+  background: #333;
   padding: 0px;
-  color: #444;
+  color: #337ab7;
   font-family: "Lato", Tahoma, Geneva, sans-serif;
   font-size: 16px;
   width: 100%;
@@ -102,7 +102,7 @@ code {
   left: 0px;
   width: 100%;
   height: 100%;
-  border: 0.1em solid #1abc9c;
+  border: 0.1em solid #337ab7;
   border-radius: 50%;
   clip: rect(0em, 0.5em, 1em, 0em);
 }
@@ -119,7 +119,7 @@ code {
   display: block;
   background: none;
   border-radius: 50%;
-  color: #7F8C8D;
+  color: #999;
   font-size: 0.25em;
   line-height: 2.6em;
   text-align: center;
@@ -158,6 +158,6 @@ code {
   line-height: 90px;
   text-align: center;
   font-size: 25px;
-  color: #1ABC9C;
+  color: #337ab7;
   /*border: 2px dashed #f69c55;*/
 }
