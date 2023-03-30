@@ -1,7 +1,9 @@
 var config = function () {
     return {
             cellData: {mediaLink: './data/cellData.tsv', size: "96503040"},
-            geneData: {mediaLink: './data/geneData.tsv', size: "136717302"},
+            // geneData: {mediaLink: './data/geneData.tsv', size: "136717302"},
+            // cellData: {mediaLink: 'https://storage.googleapis.com/merfish_data/cellData.tsv', size: "96503040"},
+            // geneData: {mediaLink: 'https://storage.googleapis.com/merfish_data/geneData.tsv', size: "136717302"},
             // cellBoundaries: {mediaLink: './cellBoundaries.tsv', size: "1306209"},
             roi: {"x0": 0, "x1": 7602, "y0": 0, "y1": 5471 },
             zoomLevels: 10,

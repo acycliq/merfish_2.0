@@ -83,8 +83,8 @@ function data_loader(workPackage) {
 
         var avg = average(data.map(d => d.progress));
         var avg_mb = average(data.map(d => (d.bytes_streamed/(1024*1024)).toFixed() ));
-        var progress_1 = data[0].progress,
-            progress_2 = data[1].progress;
+        var progress_1 = data[0].progress;
+            // progress_2 = data[1].progress;
 
         var inc = 0.0; // controls how often it will be update. Every 2% set inc = 0.02
         if (avg >= Math.min(1, previous_avg + inc)) {
@@ -97,9 +97,9 @@ function data_loader(workPackage) {
             $('#mb').html(mb_1 + 'MB');
             $('#datapoints').html(d3.format(",")(data[0].data_length));
 
-            updateDonutChart('#specificChart2', progress_2*100, true);
-            $('#mb2').html((data[1].bytes_streamed/(1024*1024)).toFixed() + 'MB');
-            $('#datapoints2').html(d3.format(",")(data[1].data_length));
+            // updateDonutChart('#specificChart2', progress_2*100, true);
+            // $('#mb2').html((data[1].bytes_streamed/(1024*1024)).toFixed() + 'MB');
+            // $('#datapoints2').html(d3.format(",")(data[1].data_length));
 
             previous_avg = avg;
         }
