@@ -95,50 +95,27 @@
 
         <div class="col-sm-12">
             <div class="midplaced">
-                <div class="col-sm-6">
-                        <div class="row">
-                            <div id="specificChart" class="donut-size">
-                                <div class="pie-wrapper">
-                                <span class="label">
-                                    <span class="num">0</span><span class="smaller">%</span>
-                                </span>
-                                    <div class="pie">
-                                        <div class="left-side half-circle"></div>
-                                        <div class="right-side half-circle"></div>
-                                    </div>
-                                    <div class="shadow"></div>
-                                </div>
+                <div class="row">
+                    <div id="specificChart" class="donut-size">
+                        <div class="pie-wrapper">
+                            <span class="label">
+                                <span class="num">0</span><span class="smaller">%</span>
+                            </span>
+                            <div class="pie">
+                                <div class="left-side half-circle"></div>
+                                <div class="right-side half-circle"></div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="text-center">
-                                <p>Num of boundaries: <span id="datapoints" class="meter">0</span></p>
-                                <p>Size: <span id="mb" class="meter">0MB</span></p>
-                            </div>
+                            <div class="shadow"></div>
                         </div>
                     </div>
-                <div class="col-sm-6">
-                        <div class="row">
-                            <div id="specificChart2" class="donut-size">
-                                <div class="pie-wrapper">
-                                <span class="label">
-                                    <span class="num">0</span><span class="smaller">%</span>
-                                </span>
-                                    <div class="pie">
-                                        <div class="left-side half-circle"></div>
-                                        <div class="right-side half-circle"></div>
-                                    </div>
-                                    <div class="shadow"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="text-center">
-                                <p>Num of cells: <span id="datapoints2" class="meter">0</span></p>
-                                <p>Size: <span id="mb2" class="meter">0MB</span></p>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+<!--                        <div class="row">-->
+<!--                            <div class="text-center">-->
+<!--                                <p>Num of cells: <span id="datapoints" class="meter">0</span></p>-->
+<!--                                <p>Size: <span id="mb" class="meter">0MB</span></p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
                 <div class="col-sm-12" id="wait_chart">
                     Building the chart. Please wait...
                 </div>
@@ -175,8 +152,8 @@
 
 
         // let url = './pointclouds/merfish_1.7/octree/cloud.js';
-        // let url = './pointclouds/merfish_2.0/octree/metadata.json';
-		let url = 'https://storage.googleapis.com/merfish_data/out/metadata.json';
+        let url = './pointclouds/merfish_2.0/octree/metadata.json';
+		// let url = 'https://storage.googleapis.com/merfish_data/out/metadata.json';
         Potree.loadPointCloud(url, 'merfish', onloaded)
 
 		function onloaded(e){
@@ -210,10 +187,10 @@
             console.log('app starts');
             var configSettings = config();
             configSettings.cellData["name"] = "cellData";
-            configSettings.geneData["name"] = "geneData";
+            // configSettings.geneData["name"] = "geneData";
             // configSettings.cellBoundaries["name"] = "cellBoundaries";
 
-            make_package([configSettings.cellData, configSettings.geneData])
+            make_package([configSettings.cellData])
         }
 
 
