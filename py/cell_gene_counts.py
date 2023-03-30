@@ -14,7 +14,7 @@ def app():
 
 
     df = pd.read_csv(r"E:\OMNI-SCI-FV\MsBrain_Eg1_VS6_JH_V6_05-02-2021\region_0\detected_transcripts.csv")
-    # df = pd.read_csv(r"spots_min.csv").head(1000*1000)
+    # df = pd.read_csv(r"spots_min.csv").head(1000*100)
 
     gene_panel, gene_id = np.unique(df.gene, return_inverse=True)
 
@@ -27,13 +27,13 @@ def app():
     df.global_y = df.global_y - df.global_y.mean()
     df.global_z = df.global_z - df.global_z.mean()
 
-    top_row = pd.Series({'global_x': np.finfo(np.float32).min,
-                         'global_y': np.finfo(np.float32).min,
-                         'global_z': np.finfo(np.float32).min
+    top_row = pd.Series({'x': np.finfo(np.float32).min,
+                         'y': np.finfo(np.float32).min,
+                         'z': np.finfo(np.float32).min
                          })
 
-    # top row will correspomd to cell label=0, ie background
-    df = pd.concat([top_row.to_frame().T, df], ignore_index=True)
+    # top row will correspond to cell label=0, ie background
+    cell_centroids = pd.concat([top_row.to_frame().T, cell_centroids], ignore_index=True)
 
     xyz = df[['global_x', 'global_y', 'global_z']]
 
@@ -73,22 +73,22 @@ def app():
 
     np.save('cell_gene_counts.npy', cell_gene_counts)
     print('cell gene count array saved!')
-
-    coord_x = {int(k):v for k,v in coord_x.items()}
-    with open('coord_x.json', 'w') as fp:
-        json.dump(coord_x, fp)
-
-    coord_y = {int(k):v for k,v in coord_y.items()}
-    with open('coord_y.json', 'w') as fp:
-        json.dump(coord_y, fp)
-
-    coord_z = {int(k):v for k,v in coord_z.items()}
-    with open('coord_z.json', 'w') as fp:
-        json.dump(coord_z, fp)
-
-    gene_id_dict = {int(k):v for k,v in gene_id_dict.items()}
-    with open('gene_id_dict.json', 'w') as fp:
-        json.dump(gene_id_dict, fp)
+    #
+    # coord_x = {int(k):v for k,v in coord_x.items()}
+    # with open('coord_x.json', 'w') as fp:
+    #     json.dump(coord_x, fp)
+    #
+    # coord_y = {int(k):v for k,v in coord_y.items()}
+    # with open('coord_y.json', 'w') as fp:
+    #     json.dump(coord_y, fp)
+    #
+    # coord_z = {int(k):v for k,v in coord_z.items()}
+    # with open('coord_z.json', 'w') as fp:
+    #     json.dump(coord_z, fp)
+    #
+    # gene_id_dict = {int(k):v for k,v in gene_id_dict.items()}
+    # with open('gene_id_dict.json', 'w') as fp:
+    #     json.dump(gene_id_dict, fp)
 
 
     print(df.head())
@@ -97,6 +97,6 @@ def app():
 
 
 if __name__ == '__main__':
-    np.load(r'cell_gene_counts.npy')
+    # np.load(r'cell_gene_counts.npy')
     app()
     print('Done')
