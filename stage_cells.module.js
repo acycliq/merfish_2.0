@@ -76,7 +76,8 @@ function ellipsoids_2(data, props) {
     for (var i = 0; i < counts; i++) {
         var coords = data[i],
             scales = {x:10, y:10, z:10},
-            rot = {x:0, y:0, z:0};
+            rot = {x:0, y:0, z:0},
+            rgb = {r: data[i].r, g: data[i].g, b: data[i].b};
         // topClass = data[i].topClass,
         // color =  data[i].color;
         var dummy = new THREE.Object3D();
@@ -86,7 +87,7 @@ function ellipsoids_2(data, props) {
         dummy.updateMatrix();
         INSTANCEDMESH.name = props.name;
         INSTANCEDMESH.setMatrixAt(i, dummy.matrix);
-        INSTANCEDMESH.setColorAt(i, new THREE.Color( 0, 0.2, 1.0 ));
+        INSTANCEDMESH.setColorAt(i, new THREE.Color( rgb.r/255.0, rgb.g/255.0, rgb.b/255.0 ));
         temp_obj.applyMatrix4(dummy.matrix)
     }
     console.log('toc')
