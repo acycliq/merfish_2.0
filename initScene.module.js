@@ -35,7 +35,7 @@ function onMouseMove(event) {
         y: -(event.clientY / viewer.renderer.domElement.clientHeight) * 2 + 1,
     }
 
-    console.log(mouse)
+    // console.log(mouse)
     const raycaster = new THREE.Raycaster()
 
     raycaster.setFromCamera(mouse, scene.getActiveCamera())
