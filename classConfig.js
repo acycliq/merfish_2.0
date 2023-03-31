@@ -4,6 +4,7 @@ function classColorsCodes()
 {
     var out = [
 
+        {className: 'class_0',            IdentifiedType: 'Axo-axonic',         color: '#bd3a19'},
         {className: 'class_1',            IdentifiedType: 'Axo-axonic',         color: '#3A19BD'},
         {className: 'class_2',                     IdentifiedType: 'Backprojection',     color: '#3DCCFF'},
         {className: 'class_3',             IdentifiedType: 'Basket',             color: '#7757FA'},
