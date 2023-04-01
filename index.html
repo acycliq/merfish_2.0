@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
 
     <meta charset="utf-8">
@@ -129,6 +129,19 @@
         function removePreloader() {
             $('#preloader').delay(350).fadeOut(250); // will fade out the white DIV that covers the website.
             $('body').delay(350).css({'overflow': 'visible'});
+        }
+    </script>
+
+    <script>
+        function remove_line(){
+            var scene = viewer.scene.scene
+            scene.children.filter(d => d.type === "Line").forEach(el => scene.remove(el))
+        }
+
+        function clearScreen(){
+            remove_line()
+            $('#dataTableControl').hide();
+            $('#donutChartControl').hide();
         }
     </script>
 

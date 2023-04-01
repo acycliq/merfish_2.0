@@ -14,6 +14,9 @@ function initScene(data){
 
     // all done, remove the preloader
     removePreloader()
+
+    clearScreen()
+
 }
 
 const groupBy = (array, key) => {
@@ -43,12 +46,18 @@ function onMouseMove(event) {
     const intersects = raycaster.intersectObjects([cells.front_face.instancedMesh])
 
     if (intersects.length > 0) {
-        var instanceId = cellData[intersects[0].instanceId];
-        if (last_visited !== instanceId){
+        if (intersects[0].distance < 200){
+            var instanceId = cellData[intersects[0].instanceId];
+            if (last_visited !== instanceId){
             // remove the lines from the last visited cell and draw the ones over the new cell
+            remove_line()
             remove_line()
             cellMouseHover(instanceId.label)
             last_visited = instanceId
+            }
+        }
+        else {
+            clearScreen()
         }
     }
     else {
@@ -59,9 +68,16 @@ function onMouseMove(event) {
     }
 }
 
+// function clearScreen(){
+//     remove_line()
+//     $('#dataTableControl').hide();
+//     $('#donutChartControl').hide();
+// }
+
 function cellMouseHover(label) {
     console.log('Hovering over cell: ' + label)
-    d3.json("py/cellData/" + label + ".json", outer(label));
+    // "https://storage.googleapis.com/merfish_data/cellData/"
+    d3.json("./py/cellData/" + label + ".json", outer(label));
 }
 
 
@@ -71,7 +87,9 @@ function outer(label){
         var lines = make_line(data, targetCell)
         lines.map(d => viewer.scene.scene.add(d));
         var spots = groupBy(data, 'gene');
+        $('#dataTableControl').show();
         renderDataTable(spots, targetCell)
+        $('#donutChartControl').show();
         donutchart(targetCell)
     }
 }
@@ -85,10 +103,10 @@ function make_line(obj, targetCell){
     return out
 }
 
-function remove_line(){
-    var scene = viewer.scene.scene
-    scene.children.filter(d => d.type === "Line").forEach(el => scene.remove(el))
-}
+// function remove_line(){
+//     var scene = viewer.scene.scene
+//     scene.children.filter(d => d.type === "Line").forEach(el => scene.remove(el))
+// }
 
 function make_line_helper(spot_coords, targetCell) {
     var points = [];
