@@ -77,9 +77,31 @@ function onMouseMove(event) {
 function cellMouseHover(label) {
     console.log('Hovering over cell: ' + label)
     // "https://storage.googleapis.com/merfish_data/cellData/"
-    d3.json("./py/cellData/" + label + ".json", outer(label));
+    // d3.json("./py/cellData/" + label + ".json", outer(label));
+    d3.queue()
+        .defer(d3.json, "./py/cellData/" + label + ".json")
+        .defer(d3.csv, "./py/merfish_colour_scheme.csv")
+        .await(splitCharts(label))
 }
 
+function splitCharts(label) {
+    return (err, ...args) => {
+
+        var data = args[0];
+        var geneColors = args[1];
+        var targetCell = cellData.filter(d => d.label === label)[0]
+        var lines = make_line(data, targetCell, geneColors)
+        lines.map(d => viewer.scene.scene.add(d));
+        var spots = groupBy(data, 'gene');
+        $('#dataTableControl').show();
+        renderDataTable(spots, targetCell)
+        $('#donutChartControl').show();
+        donutchart(targetCell)
+
+        //render now the charts
+
+    }
+}
 
 function outer(label){
     return function onCellMouseHover(data) {
@@ -94,9 +116,21 @@ function outer(label){
     }
 }
 
+function get_color(gene, geneColors){
+    var specs = geneColors.filter(d => d.gene == gene)
+    if (specs){
+        return {'r': +specs[0].r, 'g': +specs[0].g, 'b': +specs[0].b}
+    }
+    else{
+        return {'r': [], 'g': [], 'b': []}
+    }
+}
 
-function make_line(obj, targetCell){
+function make_line(obj, targetCell, geneColors){
     var arr = Object.entries(obj).map(d => d[1]).flat()
+    arr.forEach(d => d['r'] = get_color(d.gene, geneColors).r)
+    arr.forEach(d => d['g'] = get_color(d.gene, geneColors).g)
+    arr.forEach(d => d['b'] = get_color(d.gene, geneColors).b)
     var out = arr.map(d => {
         return make_line_helper(d, targetCell)
     });
@@ -108,10 +142,10 @@ function make_line(obj, targetCell){
 //     scene.children.filter(d => d.type === "Line").forEach(el => scene.remove(el))
 // }
 
-function make_line_helper(spot_coords, targetCell) {
+function make_line_helper(spotData, targetCell) {
     var points = [];
     points.push(
-        new THREE.Vector3(spot_coords.x, spot_coords.y, spot_coords.z),
+        new THREE.Vector3(spotData.x, spotData.y, spotData.z),
         new THREE.Vector3(targetCell.x, targetCell.y, targetCell.z)
     )
     var geometry = new THREE.BufferGeometry().setFromPoints(points);
@@ -119,8 +153,7 @@ function make_line_helper(spot_coords, targetCell) {
     var line = new THREE.Line(
         geometry,
         new THREE.LineBasicMaterial({
-            // color: getColor(d.Gene)
-            color: '#00FF00'
+            color:  new THREE.Color( spotData.r/255.0, spotData.g/255.0, spotData.b/255.0)
         })
     );
     return line
