@@ -82,10 +82,10 @@ function cellMouseHover(label) {
         // .defer(d3.json, "./py/cellData/" + label + ".json")
         .defer(d3.json, "https://storage.googleapis.com/merfish_data/cellData/"+ label + ".json")
         .defer(d3.csv, "./py/merfish_colour_scheme.csv")
-        .await(splitCharts(label))
+        .await(splitArgs(label))
 }
 
-function splitCharts(label) {
+function splitArgs(label) {
     return (err, ...args) => {
 
         var data = args[0];
@@ -95,27 +95,26 @@ function splitCharts(label) {
         lines.map(d => viewer.scene.scene.add(d));
         var spots = groupBy(data, 'gene');
         $('#dataTableControl').show();
+        $('#cellCoordsControl').show();
         renderDataTable(spots, targetCell)
         $('#donutChartControl').show();
         donutchart(targetCell)
 
-        //render now the charts
-
     }
 }
 
-function outer(label){
-    return function onCellMouseHover(data) {
-        var targetCell = cellData.filter(d => d.label === label)[0]
-        var lines = make_line(data, targetCell)
-        lines.map(d => viewer.scene.scene.add(d));
-        var spots = groupBy(data, 'gene');
-        $('#dataTableControl').show();
-        renderDataTable(spots, targetCell)
-        $('#donutChartControl').show();
-        donutchart(targetCell)
-    }
-}
+// function outer(label){
+//     return function onCellMouseHover(data) {
+//         var targetCell = cellData.filter(d => d.label === label)[0]
+//         var lines = make_line(data, targetCell)
+//         lines.map(d => viewer.scene.scene.add(d));
+//         var spots = groupBy(data, 'gene');
+//         // $('#dataTableControl').show();
+//         // $('#cellCoordsControl').show();
+//         renderDataTable(spots, targetCell)
+//         donutchart(targetCell)
+//     }
+// }
 
 function get_color(gene, geneColors){
     var specs = geneColors.filter(d => d.gene == gene)

@@ -7,7 +7,7 @@ function renderDataTable(spots, cell) {
     for (gene_name in spots){
         mydata.push({
             "Genenames": gene_name,
-            "CellGeneCount": spots[gene_name].length.toFixed(2),
+            "CellGeneCount": +spots[gene_name].length.toFixed(2),
         })
     }
 
@@ -15,7 +15,7 @@ function renderDataTable(spots, cell) {
     for (i = 0; i < n; i++) {
         mydata2.push({
             "ClassName": cell.classes[i],
-            "Prob": cell.class_prob[i], // d.Prob can be just a float, make sure it is an array
+            "Prob": +cell.class_prob[i], // d.Prob can be just a float, make sure it is an array
         })
     }
 
@@ -89,18 +89,18 @@ function renderDataTable(spots, cell) {
         .order([1, 'desc'])
         .draw();
 
-   //  var total = getTotal(table);
+    var total = getTotal(table);
    //      // centroid = dapiConfig.t.untransform(d.centroid);
    //
-   //  var str = "<b> <strong>Cell Num: </strong>" + cell.label
-   //      // + " <br> <strong>Gene Counts: </strong>" + total.toFixed(0)
-   //      // + " <br>  (<strong>x, y, z</strong>): (" + d.X.toFixed(0) + ", " + d.Y.toFixed(0) + ", " + d.Z.toFixed(0) + ")"
-   //      + " <br>  <strong>x:</strong> " + cell.x.toFixed(0)
-   //      + " <br>  <strong>y:</strong> " + cell.y.toFixed(0)
-   //      + " <br>  <strong>z:</strong> " + cell.z.toFixed(0)
-   //      + " </b>";
-   //
-   //
-   // document.getElementById('dtTitle').innerHTML = str
+    var str = "<b> <strong>Cell Num: </strong>" + cell.label
+        + " <br> <strong>Gene Counts: </strong>" + total.toFixed(0)
+        // + " <br>  (<strong>x, y, z</strong>): (" + d.X.toFixed(0) + ", " + d.Y.toFixed(0) + ", " + d.Z.toFixed(0) + ")"
+        + " <br>  <strong>x:</strong> " + cell.x.toFixed(0)
+        + " <br>  <strong>y:</strong> " + cell.y.toFixed(0)
+        + " <br>  <strong>z:</strong> " + cell.z.toFixed(0)
+        + " </b>";
+
+
+   document.getElementById('cellCoordsControlText').innerHTML = str
 
 }

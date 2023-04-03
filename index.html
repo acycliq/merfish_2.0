@@ -72,6 +72,17 @@
         <div id="potree_sidebar_container"> </div>
     </div>
 
+
+    <div class='tab-pane active fade in' id='cellCoordsControl'>
+        <div class='container-fluid'>
+            <div class='col-sm-12'>
+                <div class='row myTitle', id='cellCoordsControlText' style='margin-bottom:5px'>
+                    <h4>Highlighted Cell</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="tab-pane active fade in" id="dataTableControl">
         <div class="container-fluid col-sm-12" style="background-color: darkgrey;">
             <table id='dtTable' class='display compact custom' data-page-length='5' width=100%></table>
@@ -158,6 +169,7 @@
             remove_line()
             $('#dataTableControl').hide();
             $('#donutChartControl').hide();
+            $('#cellCoordsControl').hide();
         }
     </script>
 
