@@ -79,7 +79,8 @@ function cellMouseHover(label) {
     // "https://storage.googleapis.com/merfish_data/cellData/"
     // d3.json("./py/cellData/" + label + ".json", outer(label));
     d3.queue()
-        .defer(d3.json, "./py/cellData/" + label + ".json")
+        // .defer(d3.json, "./py/cellData/" + label + ".json")
+        .defer(d3.json, "https://storage.googleapis.com/merfish_data/cellData/"+ label + ".json")
         .defer(d3.csv, "./py/merfish_colour_scheme.csv")
         .await(splitCharts(label))
 }
