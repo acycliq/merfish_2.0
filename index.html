@@ -167,9 +167,19 @@
 
         function clearScreen(){
             remove_lines()
+            hideControls()
+        }
+
+        function hideControls(){
             $('#dataTableControl').hide();
             $('#donutChartControl').hide();
             $('#cellCoordsControl').hide();
+        }
+
+        function showControls(){
+            $('#dataTableControl').show();
+            $('#donutChartControl').show();
+            $('#cellCoordsControl').show();
         }
     </script>
 

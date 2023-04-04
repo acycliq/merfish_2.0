@@ -110,10 +110,8 @@ function splitArgs(label) {
         var lines = make_line(data, targetCell, geneColors)
         lines.map(d => viewer.scene.scene.add(d));
         var spots = groupBy(data, 'gene');
-        $('#dataTableControl').show();
-        $('#cellCoordsControl').show();
+        showControls()
         renderDataTable(spots, targetCell)
-        $('#donutChartControl').show();
         donutchart(targetCell)
 
     }
