@@ -72,7 +72,7 @@ function onMouseMove(event) {
                 // sometimes I may end up with two cell having lines, hence I am doing this twice. There must be a better way,
                 // maybe to throttle the mouse event?
                 remove_lines()
-                remove_line(last_visited)
+                // remove_line(last_visited) // I am throttling now, hence this is now redundant
                 cellMouseHover(instanceId.label)
                 last_visited = instanceId.label
             }
