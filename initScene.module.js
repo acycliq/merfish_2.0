@@ -10,13 +10,31 @@ function initScene(data){
 
     iniLights()
 
-    viewer.renderer.domElement.addEventListener('mousemove', onMouseMove, false)
+    // viewer.renderer.domElement.addEventListener('mousemove', onMouseMove, false)
+    // add a tiny throttle. The callback onMouseMove wont be called until after 5milliseconds
+    // have passed.
+    viewer.renderer.domElement.addEventListener('mousemove', throttle(onMouseMove, 5));
+
 
     // all done, remove the preloader
     removePreloader()
 
     clearScreen()
 
+}
+
+function throttle(callback, interval) {
+    // From https://programmingwithmosh.com/javascript/javascript-throttle-and-debounce-patterns/
+    // similar to: https://stackoverflow.com/questions/23181243/throttling-a-mousemove-event-to-fire-no-more-than-5-times-a-second
+  let enableCall = true;
+
+  return function(...args) {
+    if (!enableCall) return;
+
+    enableCall = false;
+    callback.apply(this, args);
+    setTimeout(() => enableCall = true, interval);
+  }
 }
 
 const groupBy = (array, key) => {
@@ -48,12 +66,15 @@ function onMouseMove(event) {
     if (intersects.length > 0) {
         if (intersects[0].distance < 200){
             var instanceId = cellData[intersects[0].instanceId];
-            if (last_visited !== instanceId){
-            // remove the lines from the last visited cell and draw the ones over the new cell
-            remove_line()
-            remove_line()
-            cellMouseHover(instanceId.label)
-            last_visited = instanceId
+            if (last_visited !== instanceId.label){
+                // remove the lines from the last visited cell and draw the ones over the new cell
+                // I am removing the lines twice. First all the lines (no matter the cell) and then the ones specific to the last cell
+                // sometimes I may end up with two cell having lines, hence I am doing this twice. There must be a better way,
+                // maybe to throttle the mouse event?
+                remove_lines()
+                remove_line(last_visited)
+                cellMouseHover(instanceId.label)
+                last_visited = instanceId.label
             }
         }
         else {
@@ -63,16 +84,11 @@ function onMouseMove(event) {
     else {
         // if you are now hovering over any cell, remove any lines you have drawn already
         // and map the last_visited variable to 0 (ie the label for the background)
-        remove_line()
+        remove_lines()
         last_visited = 0
     }
 }
 
-// function clearScreen(){
-//     remove_line()
-//     $('#dataTableControl').hide();
-//     $('#donutChartControl').hide();
-// }
 
 function cellMouseHover(label) {
     console.log('Hovering over cell: ' + label)
@@ -137,10 +153,10 @@ function make_line(obj, targetCell, geneColors){
     return out
 }
 
-// function remove_line(){
-//     var scene = viewer.scene.scene
-//     scene.children.filter(d => d.type === "Line").forEach(el => scene.remove(el))
-// }
+function remove_line(label){
+    var scene = viewer.scene.scene
+    scene.children.filter(d => (d.type === "Line") && (d.name === label)).forEach(el => scene.remove(el))
+}
 
 function make_line_helper(spotData, targetCell) {
     var points = [];
@@ -154,8 +170,9 @@ function make_line_helper(spotData, targetCell) {
         geometry,
         new THREE.LineBasicMaterial({
             color:  new THREE.Color( spotData.r/255.0, spotData.g/255.0, spotData.b/255.0)
-        })
+        }),
     );
+    line.name = targetCell.label
     return line
 }
 
