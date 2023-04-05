@@ -73,11 +73,13 @@ function onMouseMove(event) {
                 // maybe to throttle the mouse event?
                 remove_lines()
                 // remove_line(last_visited) // I am throttling now, hence this is now redundant
+                $('html,body').css('cursor', 'pointer');
                 cellMouseHover(instanceId.label)
                 last_visited = instanceId.label
             }
         }
         else {
+            $('html,body').css('cursor', 'default');
             clearScreen()
         }
     }
@@ -85,6 +87,7 @@ function onMouseMove(event) {
         // if you are now hovering over any cell, remove any lines you have drawn already
         // and map the last_visited variable to 0 (ie the label for the background)
         remove_lines()
+        $('html,body').css('cursor', 'default');
         last_visited = 0
     }
 }
