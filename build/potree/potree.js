@@ -58592,13 +58592,19 @@ void main() {
 	#endif
 	
 	#if defined(circle_point_shape)
-		float cc = u*u + v*v;
-		if(cc > 1.0){
-			discard;
-		}
-		if(cc < vPointSourceID/13.0){
-		    discard;
-		}
+        if (-vViewPosition.z > 50.0){
+            // points at the far back
+            gl_FragColor = vec4(vColor.r, vColor.g, vColor.b, gl_FragColor.a);
+        }
+        else {
+            float cc = u*u + v*v;
+            if(cc > 1.0){
+                discard;
+            }
+            if(cc < vPointSourceID/13.0){
+                discard;
+            }
+        }
 	#endif
 
 	#if defined paraboloid_point_shape
