@@ -441,7 +441,12 @@ export class PointCloudMaterial extends THREE.RawShaderMaterial {
 
 		if(valuesChanged){
 			this.classificationTexture.needsUpdate = true;
+			console.log('classification changed, I need to update material')
 
+			// this dispatchEvent does nothing at all. It can be safely removed.
+			// There is no Event 'material_property_changed'
+			// Classifications turn on/off because of the update line above. That
+			// alone suffices.
 			this.dispatchEvent({
 				type: 'material_property_changed',
 				target: this
