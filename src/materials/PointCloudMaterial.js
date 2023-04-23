@@ -4,6 +4,7 @@ import {Utils} from "../utils.js";
 import {Gradients} from "./Gradients.js";
 import {Shaders} from "../../build/shaders/shaders.js";
 import {ClassificationScheme} from "./ClassificationScheme.js";
+import {PointSourceIDScheme} from "./PointSourceIDScheme.js";
 import {PointSizeType, PointShape, TreeType, ElevationGradientRepeat} from "../defines.js";
 
 //
@@ -65,6 +66,16 @@ export class PointCloudMaterial extends THREE.RawShaderMaterial {
 			texture.needsUpdate = true;
 
 			this.classificationTexture = texture;
+		}
+
+		{
+			const [width, height] = [65536, 1];
+			let data = new Uint16Array(width * 4);
+			let texture = new THREE.DataTexture(data, width, height, THREE.RGBAFormat);
+			texture.magFilter = THREE.NearestFilter;
+			texture.needsUpdate = true;
+
+			this.pointSourceIDTexture = texture;
 		}
 
 		this.attributes = {
@@ -153,9 +164,11 @@ export class PointCloudMaterial extends THREE.RawShaderMaterial {
 		};
 
 		this.classification = ClassificationScheme.DEFAULT;
+		this.pointSourceID = PointSourceIDScheme.DEFAULT;
 
 		this.defaultAttributeValues.normal = [0, 0, 0];
 		this.defaultAttributeValues.classification = [0, 0, 0];
+		this.defaultAttributeValues.pointSourceID = [0, 1, 0];
 		this.defaultAttributeValues.indices = [0, 0, 0, 0];
 
 		this.vertexShader = Shaders['pointcloud.vs'];
@@ -442,6 +455,72 @@ export class PointCloudMaterial extends THREE.RawShaderMaterial {
 		if(valuesChanged){
 			this.classificationTexture.needsUpdate = true;
 			console.log('classification changed, I need to update material')
+
+			// this dispatchEvent does nothing at all. It can be safely removed.
+			// There is no Event 'material_property_changed'
+			// Classifications turn on/off because of the update line above. That
+			// alone suffices.
+			this.dispatchEvent({
+				type: 'material_property_changed',
+				target: this
+			});
+		}
+	}
+
+	recomputePointSourceID () {
+		const pointSourceID = this.pointSourceID;
+		const data = this.pointSourceIDTexture.image.data;
+
+		let width = 65536;
+		const black = [1, 1, 1, 1];
+
+		let valuesChanged = false;
+
+		for (let i = 0; i < width; i++) {
+
+			let color;
+			let visible = true;
+
+			if (pointSourceID[i]) {
+				color = pointSourceID[i].color;
+				visible = pointSourceID[i].visible;
+			} else if(pointSourceID.DEFAULT) {
+				color = pointSourceID.DEFAULT.color;
+				visible = pointSourceID.DEFAULT.visible;
+			}else{
+				color = black;
+			}
+
+			const r = parseInt(255 * color[0]);
+			const g = parseInt(255 * color[1]);
+			const b = parseInt(255 * color[2]);
+			const a = visible ? parseInt(255 * color[3]) : 0;
+
+
+			if(data[4 * i + 0] !== r){
+				data[4 * i + 0] = r;
+				valuesChanged = true;
+			}
+
+			if(data[4 * i + 1] !== g){
+				data[4 * i + 1] = g;
+				valuesChanged = true;
+			}
+
+			if(data[4 * i + 2] !== b){
+				data[4 * i + 2] = b;
+				valuesChanged = true;
+			}
+
+			if(data[4 * i + 3] !== a){
+				data[4 * i + 3] = a;
+				valuesChanged = true;
+			}
+		}
+
+		if(valuesChanged){
+		    this.pointSourceIDTexture.needsUpdate = true;
+			console.log('pointSourceID changed, I need to update material')
 
 			// this dispatchEvent does nothing at all. It can be safely removed.
 			// There is no Event 'material_property_changed'

@@ -31,6 +31,7 @@ import {DeviceOrientationControls} from "../navigation/DeviceOrientationControls
 import {VRControls} from "../navigation/VRControls.js";
 import { EventDispatcher } from "../EventDispatcher.js";
 import { ClassificationScheme } from "../materials/ClassificationScheme.js";
+import { PointSourceIDScheme } from "../materials/PointSourceIDScheme.js"
 import { VRButton } from '../../libs/three.js/extra/VRButton.js';
 
 import JSON5 from "../../libs/json5-2.1.3/json5.mjs";
@@ -139,6 +140,7 @@ export class Viewer extends EventDispatcher{
 		this.description = "";
 
 		this.classifications = ClassificationScheme.DEFAULT;
+		this.pointSourceIDs = PointSourceIDScheme.DEFAULT;
 
 		this.moveSpeed = 10;
 
@@ -1646,7 +1648,9 @@ export class Viewer extends EventDispatcher{
 			material.uniforms.uFilterPointSourceIDClipRange.value = this.filterPointSourceIDRange;
 
 			material.classification = this.classifications;
+			material.pointSourceID = this.pointSourceIDs;
 			material.recomputeClassification();
+			material.recomputePointSourceID();
 
 			this.updateMaterialDefaults(pointcloud);
 		}
