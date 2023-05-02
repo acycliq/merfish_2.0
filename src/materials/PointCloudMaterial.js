@@ -70,7 +70,7 @@ export class PointCloudMaterial extends THREE.RawShaderMaterial {
 
 		{
 			const [width, height] = [65536, 1];
-			let data = new Uint16Array(width * 4);
+			let data = new Uint8Array(width * 4);
 			let texture = new THREE.DataTexture(data, width, height, THREE.RGBAFormat);
 			texture.magFilter = THREE.NearestFilter;
 			texture.needsUpdate = true;
@@ -123,6 +123,7 @@ export class PointCloudMaterial extends THREE.RawShaderMaterial {
 			pcIndex:			{ type: "f", value: 0 },
 			gradient:			{ type: "t", value: this.gradientTexture },
 			classificationLUT:	{ type: "t", value: this.classificationTexture },
+			pointSourceIDLUT:	{ type: "t", value: this.pointSourceIDTexture },
 			uHQDepthMap:		{ type: "t", value: null },
 			toModel:			{ type: "Matrix4f", value: [] },
 			diffuse:			{ type: "fv", value: [1, 1, 1] },

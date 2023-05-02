@@ -516,38 +516,38 @@ vec3 getSourceID(){
 	return texture2D(gradient, vec2(w,1.0 - w)).rgb;
 }
 
-vec3 getCompositeColor(){
-	vec3 c;
-	float w;
-
-	c += wRGB * getRGB();
-	w += wRGB;
-	
-	c += wIntensity * getIntensity() * vec3(1.0, 1.0, 1.0);
-	w += wIntensity;
-	
-	c += wElevation * getElevation();
-	w += wElevation;
-	
-	c += wReturnNumber * getReturnNumber();
-	w += wReturnNumber;
-	
-	c += wSourceID * getSourceID();
-	w += wSourceID;
-	
-	vec4 cl = wClassification * getClassification();
-	c += cl.a * cl.rgb;
-	w += wClassification * cl.a;
-
-	c = c / w;
-	
-	if(w == 0.0){
-		//c = color;
-		gl_Position = vec4(100.0, 100.0, 100.0, 0.0);
-	}
-	
-	return c;
-}
+// vec3 getCompositeColor(){
+// 	vec3 c;
+// 	float w;
+//
+// 	c += wRGB * getRGB();
+// 	w += wRGB;
+//
+// 	c += wIntensity * getIntensity() * vec3(1.0, 1.0, 1.0);
+// 	w += wIntensity;
+//
+// 	c += wElevation * getElevation();
+// 	w += wElevation;
+//
+// 	c += wReturnNumber * getReturnNumber();
+// 	w += wReturnNumber;
+//
+// 	c += wSourceID * getSourceID();
+// 	w += wSourceID;
+//
+// 	vec4 cl = wClassification * getClassification();
+// 	c += cl.a * cl.rgb;
+// 	w += wClassification * cl.a;
+//
+// 	c = c / w;
+//
+// 	if(w == 0.0){
+// 		//c = color;
+// 		gl_Position = vec4(100.0, 100.0, 100.0, 0.0);
+// 	}
+//
+// 	return c;
+// }
 
 
 vec3 getNormal(){
@@ -606,57 +606,8 @@ vec3 getColor(){
 	
 	#ifdef color_type_rgba
 		color = getRGB();
-	#elif defined color_type_height || defined color_type_elevation
-		color = getElevation();
-	#elif defined color_type_rgb_height
-		vec3 cHeight = getElevation();
-		color = (1.0 - uTransition) * getRGB() + uTransition * cHeight;
-	#elif defined color_type_depth
-		float linearDepth = gl_Position.w;
-		float expDepth = (gl_Position.z / gl_Position.w) * 0.5 + 0.5;
-		color = vec3(linearDepth, expDepth, 0.0);
-		//color = vec3(1.0, 0.5, 0.3);
-	#elif defined color_type_intensity
-		float w = getIntensity();
-		color = vec3(w, w, w);
-	#elif defined color_type_gps_time
-		color = getGpsTime();
-	#elif defined color_type_intensity_gradient
-		float w = getIntensity();
-		color = texture2D(gradient, vec2(w,1.0-w)).rgb;
-	#elif defined color_type_color
-		color = uColor;
-	#elif defined color_type_level_of_detail
-		float depth = getLOD();
-		float w = depth / 10.0;
-		color = texture2D(gradient, vec2(w,1.0-w)).rgb;
-	#elif defined color_type_indices
-		color = indices.rgb;
-	#elif defined color_type_classification
-		vec4 cl = getClassification(); 
-		color = cl.rgb;
-	#elif defined color_type_return_number
-		color = getReturnNumber();
-	#elif defined color_type_returns
-		color = getReturns();
-	#elif defined color_type_number_of_returns
-		color = getNumberOfReturns();
-	#elif defined color_type_source_id
-		color = getSourceID();
-	#elif defined color_type_point_source_id
-		color = getSourceID();
-	#elif defined color_type_normal
-		color = (modelMatrix * vec4(normal, 0.0)).xyz;
-	#elif defined color_type_phong
-		color = color;
-	#elif defined color_type_composite
-		color = getCompositeColor();
-	#elif defined color_type_matcap
-		color = getMatcap();
-	#else 
-		color = getExtra();
 	#endif
-	
+
 	if (backfaceCulling && applyBackfaceCulling()) {
 		color = vec3(0.);
 	}
@@ -748,10 +699,10 @@ bool pointInClipPolygon(vec3 point, int polyIdx) {
 void doClipping(){
 
 	{
-		vec4 cl = getClassification(); 
+		vec4 cl = getClassification();
 		if(cl.a == 0.0){
 			gl_Position = vec4(100.0, 100.0, 100.0, 0.0);
-			
+
 			return;
 		}
 	}

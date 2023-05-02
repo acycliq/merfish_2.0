@@ -1362,6 +1362,12 @@ export class Renderer {
 			gl.bindTexture(classificationTexture.target, classificationTexture.id);
 			currentTextureBindingPoint++;
 
+			let pointSourceIDTexture = this.textures.get(material.pointSourceIDTexture);
+			shader.setUniform1i("pointSourceIDLUT", currentTextureBindingPoint);
+			gl.activeTexture(gl.TEXTURE0 + currentTextureBindingPoint);
+			gl.bindTexture(pointSourceIDTexture.target, pointSourceIDTexture.id);
+			currentTextureBindingPoint++;
+
 			let matcapTexture = this.textures.get(material.matcapTexture);
 			shader.setUniform1i("matcapTextureUniform", currentTextureBindingPoint);
 			gl.activeTexture(gl.TEXTURE0 + currentTextureBindingPoint);
