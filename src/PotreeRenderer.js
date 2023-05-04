@@ -269,6 +269,7 @@ class Shader {
 
 				for (let i = 0; i < numUniforms; i++) {
 					let uniform = gl.getActiveUniform(program, i);
+					console.log(uniform.name)
 
 					let location = gl.getUniformLocation(program, uniform.name);
 
@@ -1232,6 +1233,7 @@ export class Renderer {
 			shader.setUniform1f("fov", Math.PI * camera.fov / 180);
 			shader.setUniform1f("near", camera.near);
 			shader.setUniform1f("far", camera.far);
+			shader.setUniform1f("uMyUniform", material.uniforms.uMyUniform.value);
 			
 			if(camera instanceof THREE.OrthographicCamera){
 				shader.setUniform("uUseOrthographicCamera", true);

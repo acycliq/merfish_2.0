@@ -6,7 +6,7 @@ var last_visited = 0
 function initScene(data){
     cellData = data.cellData
     cells = make_cells_2(data.cellData)
-    viewer.scene.scene.add(cells.front_face.instancedMesh);
+    // viewer.scene.scene.add(cells.front_face.instancedMesh);
 
     iniLights()
 

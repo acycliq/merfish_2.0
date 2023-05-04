@@ -129,6 +129,8 @@ varying vec3	vViewPosition;
 varying float 	vRadius;
 varying float 	vPointSize;
 varying float   vPointSourceID;
+uniform float   uMyUniform;
+uniform float   uMyUniformArray[2];
 
 
 float round(float number){
@@ -743,13 +745,20 @@ void doClipping(){
 	#endif
 
 	#if defined(clip_point_source_id_enabled)
+	float a[50];
+	a[0] = 3.0;
+	a[1] = 3.0;
+	a[2] = 3.0;
+	a[3] = 3.0;
+	a[4] = 3.0;
 	{ // point source id filter
 		vec2 range = uFilterPointSourceIDClipRange;
-		if(pointSourceID < range.x || pointSourceID > range.y){
-			gl_Position = vec4(100.0, 100.0, 100.0, 0.0);
-			
-			return;
+		for (int i=0; i<5; i++){
+		    if (pointSourceID > uMyUniform){
+		        gl_Position = vec4(100.0, 100.0, 100.0, 0.0);
+		    }
 		}
+		return;
 	}
 	#endif
 

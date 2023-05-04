@@ -1646,6 +1646,7 @@ export class Viewer extends EventDispatcher{
 			material.uniforms.uFilterNumberOfReturnsRange.value = this.filterNumberOfReturnsRange;
 			material.uniforms.uFilterGPSTimeClipRange.value = this.filterGPSTimeRange;
 			material.uniforms.uFilterPointSourceIDClipRange.value = this.filterPointSourceIDRange;
+			material.uniforms.uMyUniform.value = 31.0;
 
 			material.classification = this.classifications;
 			material.pointSourceID = this.pointSourceIDs;
