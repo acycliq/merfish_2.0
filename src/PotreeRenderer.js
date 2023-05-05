@@ -869,10 +869,10 @@ export class Renderer {
 
 			const geometry = node.geometryNode.geometry;
 
-			// var remove_genes = []
-			// for (let i=1; i<500; i++){remove_genes[i] = i}
-			// var cell_ids = [1.0, 32.0, 31.0]
-			// cell_ids.map((d,i) => {remove_genes[d] = 65536})
+			var remove_genes = []
+			for (let i=1; i<500; i++){remove_genes[i] = i}
+			var cell_ids = [1.0, 32.0, 31.0]
+			cell_ids.map((d,i) => {remove_genes[d] = 65536})
 
 			if(geometry.attributes["gps-time"]){
 				const bufferAttribute = geometry.attributes["gps-time"];
@@ -944,7 +944,7 @@ export class Renderer {
 				shader.setUniform2f("uFilterReturnNumberRange", uFilterReturnNumberRange);
 				shader.setUniform2f("uFilterNumberOfReturnsRange", uFilterNumberOfReturnsRange);
 				shader.setUniform2f("uFilterPointSourceIDClipRange", uFilterPointSourceIDClipRange);
-				// shader.setUniform1fv("uFloatArray", remove_genes)
+				shader.setUniform1fv("uFloatArray", remove_genes)
 			}
 
 			let webglBuffer = null;
