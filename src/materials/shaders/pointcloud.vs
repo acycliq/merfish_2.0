@@ -130,6 +130,8 @@ varying float 	vRadius;
 varying float 	vPointSize;
 varying float   vPointSourceID;
 
+uniform float uFloatArray[500];
+
 
 float round(float number){
 	return floor(number + 0.5);
@@ -792,14 +794,18 @@ void doClipping(){
 	#endif
 
 	#if defined(clip_point_source_id_enabled)
-	{ // point source id filter
-		vec2 range = uFilterPointSourceIDClipRange;
-		if(pointSourceID < range.x || pointSourceID > range.y){
-			gl_Position = vec4(100.0, 100.0, 100.0, 0.0);
-			
-			return;
-		}
-	}
+    { // point source id filter
+       vec2 range = uFilterPointSourceIDClipRange;
+       for (int i=0; i<500; i++){
+           float _x = uFloatArray[i];
+           vec2 temp = vec2(uFloatArray[i], 0.0);
+           if (pointSourceID == temp.x ){
+               gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+           }
+       }
+       return;
+    }
+
 	#endif
 
 	int clipVolumesCount = 0;

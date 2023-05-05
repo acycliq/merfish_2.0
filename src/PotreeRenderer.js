@@ -269,6 +269,7 @@ class Shader {
 
 				for (let i = 0; i < numUniforms; i++) {
 					let uniform = gl.getActiveUniform(program, i);
+					console.log(uniform.name)
 
 					let location = gl.getUniformLocation(program, uniform.name);
 
@@ -399,6 +400,17 @@ class Shader {
 		}
 
 		gl.uniform2f(location, value[0], value[1]);
+	}
+
+	setUniform1fv(name, value) {
+		const gl = this.gl;
+		const location = this.uniformLocations['uFloatArray[0]'];
+
+		if (location == null) {
+			return;
+		}
+
+		gl.uniform1fv(location, value);
 	}
 
 	setUniform3f(name, value) {
@@ -857,6 +869,11 @@ export class Renderer {
 
 			const geometry = node.geometryNode.geometry;
 
+			// var remove_genes = []
+			// for (let i=1; i<500; i++){remove_genes[i] = i}
+			// var cell_ids = [1.0, 32.0, 31.0]
+			// cell_ids.map((d,i) => {remove_genes[d] = 65536})
+
 			if(geometry.attributes["gps-time"]){
 				const bufferAttribute = geometry.attributes["gps-time"];
 				const attGPS = octree.getAttribute("gps-time");
@@ -920,11 +937,14 @@ export class Renderer {
 				let uFilterNumberOfReturnsRange = material.uniforms.uFilterNumberOfReturnsRange.value;
 				let uFilterPointSourceIDClipRange = material.uniforms.uFilterPointSourceIDClipRange.value;
 				
-				
-				
+				// let exclude_genes = [];
+				// for(let i = 0; i < 65535+1; i++){
+				// 	exclude_genes[i] = 65535;
+				// }
 				shader.setUniform2f("uFilterReturnNumberRange", uFilterReturnNumberRange);
 				shader.setUniform2f("uFilterNumberOfReturnsRange", uFilterNumberOfReturnsRange);
 				shader.setUniform2f("uFilterPointSourceIDClipRange", uFilterPointSourceIDClipRange);
+				// shader.setUniform1fv("uFloatArray", remove_genes)
 			}
 
 			let webglBuffer = null;
