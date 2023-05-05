@@ -936,7 +936,7 @@ export class Renderer {
 				let uFilterReturnNumberRange = material.uniforms.uFilterReturnNumberRange.value;
 				let uFilterNumberOfReturnsRange = material.uniforms.uFilterNumberOfReturnsRange.value;
 				let uFilterPointSourceIDClipRange = material.uniforms.uFilterPointSourceIDClipRange.value;
-				
+				let remove_genes = material.uniforms.uFilterFloatArray.value;
 				// let exclude_genes = [];
 				// for(let i = 0; i < 65535+1; i++){
 				// 	exclude_genes[i] = 65535;

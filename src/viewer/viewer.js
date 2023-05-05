@@ -740,6 +740,15 @@ export class Viewer extends EventDispatcher{
 		this.dispatchEvent({'type': 'filter_point_source_id_range_changed', 'viewer': this});
 	}
 
+	setFilterFloatArray(cell_ids){
+		var remove_genes = []
+		for (let i=1; i<500; i++){remove_genes[i] = i}
+		cell_ids.map((d,i) => {remove_genes[d] = 65536})
+
+		this.filterFloatArray = remove_genes
+		this.dispatchEvent({'type': 'filter_cell_ids_clipping_changed', 'viewer': this});
+	}
+
 	setLengthUnit (value) {
 		switch (value) {
 			case 'm':
@@ -1644,6 +1653,7 @@ export class Viewer extends EventDispatcher{
 			material.uniforms.uFilterNumberOfReturnsRange.value = this.filterNumberOfReturnsRange;
 			material.uniforms.uFilterGPSTimeClipRange.value = this.filterGPSTimeRange;
 			material.uniforms.uFilterPointSourceIDClipRange.value = this.filterPointSourceIDRange;
+			material.uniforms.uFilterFloatArray.value = this.filterFloatArray;
 
 			material.classification = this.classifications;
 			material.recomputeClassification();
