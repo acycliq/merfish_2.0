@@ -869,11 +869,6 @@ export class Renderer {
 
 			const geometry = node.geometryNode.geometry;
 
-			var remove_genes = []
-			for (let i=1; i<500; i++){remove_genes[i] = i}
-			var cell_ids = [1.0, 32.0, 31.0]
-			cell_ids.map((d,i) => {remove_genes[d] = 65536})
-
 			if(geometry.attributes["gps-time"]){
 				const bufferAttribute = geometry.attributes["gps-time"];
 				const attGPS = octree.getAttribute("gps-time");
