@@ -740,12 +740,22 @@ export class Viewer extends EventDispatcher{
 		this.dispatchEvent({'type': 'filter_point_source_id_range_changed', 'viewer': this});
 	}
 
-	setFilterFloatArray(cell_ids){
+	setFilterFloatArray(gene_ids){
+		// If you pass-in an empty array then all spots will be rendered.
+		// The function makes an array with length 500. If an element is -1.0 then the gene id that corresponds to
+		// this position will not be clipped. Otherwise the gene wiil be hidden from the screen.
+
 		var remove_genes = []
-		for (let i=1; i<500; i++){remove_genes[i] = i}
-		cell_ids.map((d,i) => {remove_genes[d] = 65536})
+		if (gene_ids.length > 0){
+			for (let i=0; i<500; i++){remove_genes[i] = i}
+			gene_ids.map((d,i) => {remove_genes[d] = -1.0})
+		}
+		else{
+			for (let i=0; i<500; i++){remove_genes[i] = -1.0}
+		}
 
 		this.filterFloatArray = remove_genes
+		console.log('Showing only gene ids:' + gene_ids)
 		this.dispatchEvent({'type': 'filter_cell_ids_clipping_changed', 'viewer': this});
 	}
 

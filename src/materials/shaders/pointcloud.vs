@@ -800,7 +800,7 @@ void doClipping(){
            float _x = uFloatArray[i];
            vec2 temp = vec2(uFloatArray[i], 0.0);
            if (pointSourceID == temp.x ){
-               gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+               gl_Position = vec4(100.0, 100.0, 100.0, 0.0);
            }
        }
        return;
