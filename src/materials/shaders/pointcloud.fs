@@ -67,7 +67,7 @@ void main() {
 	#endif
 	
 	#if defined(circle_point_shape)
-        if (-vViewPosition.z > 50.0){
+        if (-vViewPosition.z > 75.0){
             // points at the far back
             gl_FragColor = vec4(vColor.r, vColor.g, vColor.b, gl_FragColor.a);
         }
@@ -76,7 +76,7 @@ void main() {
             if(cc > 1.0){
                 discard;
             }
-            if(cc < vPointSourceID/13.0){
+            if(cc < vPointSourceID/314.0){
                 discard;
             }
         }
