@@ -701,14 +701,17 @@ export class ProfileWindow extends EventDispatcher {
 
 		this.svg.selectAll('*').remove();
 
-		this.scaleX = d3.scale.linear()
+		// this.scaleX = d3.scale.linear() // works for d3 v3
+		this.scaleX = d3.scaleLinear()	   // works for d3 v4
 			.domain([this.camera.left + this.camera.position.x, this.camera.right + this.camera.position.x])
 			.range([0, width]);
-		this.scaleY = d3.scale.linear()
+
+		// this.scaleY = d3.scale.linear()
+		this.scaleY = d3.scaleLinear()
 			.domain([this.camera.bottom + this.camera.position.z, this.camera.top + this.camera.position.z])
 			.range([height, 0]);
 
-		this.xAxis = d3.svg.axis()
+		this.xAxis = d3.svg.axis() // that doesnt work d3 v4
 			.scale(this.scaleX)
 			.orient('bottom')
 			.innerTickSize(-height)
