@@ -684,24 +684,28 @@ export class InputHandler extends EventDispatcher {
 		return intersections;
 	}
 
-	getHoveredSpot(){
+	getHoveredSpot() {
 		let I = this.getMousePointCloudIntersection(this.mouse)
 		let svg
-		if (I){
+		if (I) {
 			var gene_id = I.point['point source id'][0]
 			console.log('Hovering over gene id: ' + gene_id)
 
-			if (d3.select('.anno-capture').empty()){
-				svg = d3.select("#example1")
+			if (d3.select('.anno-capture').empty()) {
+				svg = d3.select("body")
+					.append("svg")
+					.attr("width", "100%")
+					.attr("height", "100%")
+				// svg = d3.select("#example1")
 
 				svg.append("g")
 					.attr("class", "annotation-group")
 					.append("rect")
-					.attr("class","anno-capture")
-					.attr("width","900px")
-					.attr("height","900px")
+					.attr("class", "anno-capture")
+					.attr("width", "100%")
+					.attr("height", "100%")
 			}
-		this.createAnno(this.mouse)
+			this.createAnno(this.mouse)
 		}
 	}
 
