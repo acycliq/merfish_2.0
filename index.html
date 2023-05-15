@@ -19,6 +19,20 @@
     </script>
 
     <style>
+        body{font-family:metric;}
+			.background{fill:#fff1e0;}
+			.anno-capture{fill-opacity:0;}
+
+        .annotation-note-bg {
+            fill-opacity: 0.8;
+        }
+
+        .annotation-note-label,
+        .annotation-note-title {
+          fill: black;
+          font-size: 0.8em;
+        }
+
         #dataTableControl {
             position: absolute;
             z-index:1000;
@@ -38,6 +52,11 @@
             z-index:1000;
             top: 10px;
             right: 10px;
+        }
+
+        #svg_div{
+            position: absolute;
+            z-index:1000;
         }
     </style>
 
@@ -84,6 +103,8 @@
 
     <!--user scripts -->
     <script src="d3.v4.js"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>-->
+    <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
     <script src='dt.js'></script>
     <script src='donut.js'></script>
     <script src="classConfig.js"></script>
@@ -131,7 +152,6 @@
         </div>
     </div>
 
-
     <div class="container-fluid" id="preloader">
         <div id="stats-container" class="stack-top">
             <div class="loading">
@@ -175,6 +195,9 @@
         <script>$('#wait_chart').hide()</script>
         <script>$('#stats-container').hide()</script>
     </div>
+
+    <svg id='example1' style="position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; "></svg>
+
 
     <script>
         function removePreloader() {

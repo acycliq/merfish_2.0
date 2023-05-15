@@ -36,7 +36,7 @@ export class InputHandler extends EventDispatcher {
 
 		this.speed = 1;
 
-		this.logMessages = false;
+		this.logMessages = true;
 
 		if (this.domElement.tabIndex === -1) {
 			this.domElement.tabIndex = 2222;
@@ -394,6 +394,7 @@ export class InputHandler extends EventDispatcher {
 	}
 
 	onMouseMove (e) {
+		console.log('on onMouseMove, line 397')
 		e.preventDefault();
 
 		let rect = this.domElement.getBoundingClientRect();
@@ -402,6 +403,7 @@ export class InputHandler extends EventDispatcher {
 		this.mouse.set(x, y);
 
 		let hoveredElements = this.getHoveredElements();
+		let hoveredSpot = this.getHoveredSpot()
 		if(hoveredElements.length > 0){
 			let names = hoveredElements.map(h => h.object.name).join(", ");
 			if (this.logMessages) console.log(`${this.constructor.name}: onMouseMove; hovered: '${names}'`);
@@ -546,7 +548,8 @@ export class InputHandler extends EventDispatcher {
 			this.mouse, 
 			this.scene.getActiveCamera(), 
 			this.viewer, 
-			this.scene.pointclouds);
+			this.scene.pointclouds,
+			{'pickWindowSize': 1.0});
 	}
 
 	toggleSelection (object) {
@@ -649,6 +652,7 @@ export class InputHandler extends EventDispatcher {
 		}
 	}
 
+
 	getHoveredElements () {
 		let scenes = this.interactiveScenes.concat(this.scene.scene);
 
@@ -670,7 +674,7 @@ export class InputHandler extends EventDispatcher {
 		
 		let camera = this.scene.getActiveCamera();
 		let ray = Utils.mouseToRay(this.mouse, camera, this.domElement.clientWidth, this.domElement.clientHeight);
-		
+
 		let raycaster = new THREE.Raycaster();
 		raycaster.ray.set(ray.origin, ray.direction);
 		raycaster.params.Line.threshold = 0.2;
@@ -679,6 +683,55 @@ export class InputHandler extends EventDispatcher {
 
 		return intersections;
 	}
+
+	getHoveredSpot(){
+		let I = this.getMousePointCloudIntersection(this.mouse)
+		let svg
+		if (I){
+			var gene_id = I.point['point source id'][0]
+			console.log('Hovering over gene id: ' + gene_id)
+
+			if (d3.select('.anno-capture').empty()){
+				svg = d3.select("#example1")
+
+				svg.append("g")
+					.attr("class", "annotation-group")
+					.append("rect")
+					.attr("class","anno-capture")
+					.attr("width","900px")
+					.attr("height","900px")
+			}
+		this.createAnno(this.mouse)
+		}
+	}
+
+
+	createAnno(coords){
+		console.log('in createAnno')
+		console.log('x:' + coords.x + ' y: ' + coords.y)
+		const thisAnno = [{
+			note: {
+				title:"This is the title",
+				bgPadding: 5,
+				label:"x:" + coords.x + " y:" + coords.y,
+			},
+			x:coords.x,
+			y:coords.y,
+			dx:20,
+			dy:20
+
+		}];
+
+		const makeThis = d3.annotation()
+			.type(d3.annotationCallout)
+			.annotations(thisAnno)
+			.editMode(true)
+
+        d3.select('.annotation-group')
+			.call(makeThis)
+
+	}
+
 
 	setScene (scene) {
 		this.deselectAll();
