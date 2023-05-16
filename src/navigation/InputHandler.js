@@ -695,11 +695,11 @@ export class InputHandler extends EventDispatcher {
 			tooltip.style("display","block")
 			tooltip.style("left", this.mouse.x + 20 +"px")
       		tooltip.style("top", this.mouse.y - 100 + "px")
-        	d3.select("#tooltip_gene").node().innerHTML = I.point['point source id'][0];
-        	d3.select("#tooltip_spot_coords").node().innerHTML = d3.format(".2f")(I.point.position.x) +
-				', ' + d3.format(".2f")(I.point.position.y) +
-				', ' + d3.format(".2f")(I.point.position.z)
-        	d3.select("#tooltip_note").node().innerHTML = 'some hex code';
+        	d3.select(".tooltip_gene").node().innerHTML = I.point['point source id'][0];
+        	d3.select(".tooltip_spot_coord_x").node().innerHTML = d3.format(".2f")(I.point.position.x)
+			d3.select(".tooltip_spot_coord_y").node().innerHTML = d3.format(".2f")(I.point.position.y)
+			d3.select(".tooltip_spot_coord_z").node().innerHTML = d3.format(".2f")(I.point.position.z)
+        	d3.select(".tooltip_note").node().innerHTML = 'some hex code';
         	$('html,body').css('cursor', 'pointer');
 		}
 		else {

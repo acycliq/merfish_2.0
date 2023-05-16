@@ -61,10 +61,10 @@
 
         #spot_tooltip {
             display: none;
-            background: #f8f8f8;
+            background: #d4d1d1;
             position: absolute;
             font-family: 'Helvetica Neue', monospace;
-            padding: 3px;
+            padding: 0px;
             min-width:150px;
             max-width:250px;
             border-style: solid;
@@ -74,18 +74,33 @@
             opacity: 0.8;
         }
 
-        #tooltip_gene {
-            font-weight: bold;
+        td.tooltip_gene {
+            font-size: large;
         }
 
         td {
-            font-size: 10pt;
+            font-size: large;
             vertical-align: text-bottom;
         }
 
         td.label {
             text-align: left;
+            font-size: large;
+            font-weight: normal;
         }
+
+        td.tooltip_spot_coord_x {
+             font-size: large;
+        }
+
+        td.tooltip_spot_coord_y {
+             font-size: large;
+        }
+
+        td.tooltip_spot_coord_z {
+             font-size: large;
+        }
+
 
     </style>
 
@@ -230,27 +245,26 @@
     <svg id='example1' style="position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; "></svg>
 
     <div id="spot_tooltip">
-            <table style="border:none;outline:none;">
+            <table style="border:none;outline:none;" >
                 <tr>
-                    <td class="label">
-                        Gene:
-                    </td>
-                    <td><div id="tooltip_gene">
-                    </div></td>
+                    <td class="label">Gene:</td>
+                    <td class="tooltip_gene"></td>
                 </tr>
                 <tr>
-                    <td class="label">
-                        x, y, z:
-                    </td>
-                    <td><div id="tooltip_spot_coords">
-                    </div></td>
+                    <td class="label">x:</td>
+                    <td class="tooltip_spot_coord_x"></td>
                 </tr>
                 <tr>
-                    <td class="label">
-                        Note:
-                    </td>
-                    <td><div id="tooltip_note">
-                    </div></td>
+                    <td class="label">y:</td>
+                    <td class="tooltip_spot_coord_y"></td>
+                </tr>
+                <tr>
+                    <td class="label">z:</td>
+                    <td class="tooltip_spot_coord_z"></td>
+                </tr>
+                <tr>
+                    <td class="label">Note:</td>
+                    <td class="tooltip_note"></td>
                 </tr>
             </table>
         </div>
