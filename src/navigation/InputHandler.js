@@ -688,24 +688,23 @@ export class InputHandler extends EventDispatcher {
 		let I = this.getMousePointCloudIntersection(this.mouse)
 		let svg
 		if (I) {
-			var gene_id = I.point['point source id'][0]
-			console.log('Hovering over gene id: ' + gene_id)
-
-			if (d3.select('.anno-capture').empty()) {
-				svg = d3.select("body")
-					.append("svg")
-					.attr("width", "100%")
-					.attr("height", "100%")
-				// svg = d3.select("#example1")
-
-				svg.append("g")
-					.attr("class", "annotation-group")
-					.append("rect")
-					.attr("class", "anno-capture")
-					.attr("width", "100%")
-					.attr("height", "100%")
-			}
-			this.createAnno(this.mouse)
+			// d3.select("body").select("my_tooltip").style("display", "block");
+			// $("#spot_tooltip").css("display","block")
+			// d3.select("#my_tooltip").style.display="block";
+			var tooltip = d3.select("#spot_tooltip")
+			tooltip.style("display","block")
+			tooltip.style("left", this.mouse.x + 20 +"px")
+      		tooltip.style("top", this.mouse.y - 100 + "px")
+        	d3.select("#tooltip_gene").node().innerHTML = I.point['point source id'][0];
+        	d3.select("#tooltip_spot_coords").node().innerHTML = d3.format(".2f")(I.point.position.x) +
+				', ' + d3.format(".2f")(I.point.position.y) +
+				', ' + d3.format(".2f")(I.point.position.z)
+        	d3.select("#tooltip_note").node().innerHTML = 'some hex code';
+        	$('html,body').css('cursor', 'pointer');
+		}
+		else {
+			d3.select("#spot_tooltip").style("display", "none");
+			$('html,body').css('cursor', 'default');
 		}
 	}
 
