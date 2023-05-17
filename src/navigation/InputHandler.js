@@ -695,7 +695,10 @@ export class InputHandler extends EventDispatcher {
 			tooltip.style("display","block")
 			tooltip.style("left", this.mouse.x + 20 +"px")
       		tooltip.style("top", this.mouse.y - 120 + "px")
-        	d3.select(".tooltip_gene").node().innerHTML = I.point['point source id'][0];
+			var pid = I.point['point source id'][0]
+			var genes = merfish_glyph_config().map(d => d.gene).sort()
+			var gene = genes[pid]
+        	d3.select(".tooltip_gene").node().innerHTML = gene;
         	d3.select(".tooltip_spot_coord_x").node().innerHTML = d3.format(".2f")(I.point.position.x)
 			d3.select(".tooltip_spot_coord_y").node().innerHTML = d3.format(".2f")(I.point.position.y)
 			d3.select(".tooltip_spot_coord_z").node().innerHTML = d3.format(".2f")(I.point.position.z)
