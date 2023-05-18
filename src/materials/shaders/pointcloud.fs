@@ -79,6 +79,7 @@ void main() {
 //             }
 
             if(vClassification == 0.0){
+            // draw the asterisk glyph
                 float diag_1 = 1.0 - lineSegment(gl_PointCoord, vec2(0.30, 0.30), vec2(0.70, 0.70));
                 float diag_2 = 1.0 - lineSegment(gl_PointCoord, vec2(0.30, 0.70), vec2(0.70, 0.30));
                 float cross = diag_1 + diag_2;
