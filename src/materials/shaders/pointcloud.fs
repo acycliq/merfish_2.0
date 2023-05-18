@@ -77,6 +77,22 @@ void main() {
 //             if(cc > 1.0){
 //                 discard;
 //             }
+
+            if(vClassification == 0.0){
+                float diag_1 = 1.0 - lineSegment(gl_PointCoord, vec2(0.30, 0.30), vec2(0.70, 0.70));
+                float diag_2 = 1.0 - lineSegment(gl_PointCoord, vec2(0.30, 0.70), vec2(0.70, 0.30));
+                float cross = diag_1 + diag_2;
+
+                float vertical = 1.0 - lineSegment(gl_PointCoord, vec2(0.5, 0.05), vec2(0.5, 0.95));
+                float horizontal = 1.0 - lineSegment(gl_PointCoord, vec2(0.10, 0.5), vec2(0.90, 0.5));
+                float plus = vertical + horizontal;
+
+                float shaper = plus + cross;
+
+                gl_FragColor = vec4(vec3(shaper) * vColor, gl_FragColor.a);
+                if (gl_FragColor.r + gl_FragColor.g + gl_FragColor.b == 0.0) discard;
+            }
+
             if(vClassification == 1.0){
             // draw the circle glyph
                 if(cc > 1.0){
