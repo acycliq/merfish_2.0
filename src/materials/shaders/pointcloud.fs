@@ -32,6 +32,7 @@ varying float	vRadius;
 varying float 	vPointSize;
 varying vec3 	vPosition;
 varying float   vPointSourceID;
+varying float   vClassification;
 
 
 float specularStrength = 1.0;
@@ -76,7 +77,7 @@ void main() {
             if(cc > 1.0){
                 discard;
             }
-            if(cc < vPointSourceID/314.0){
+            if(cc < vClassification/10.0){
                 discard;
             }
         }

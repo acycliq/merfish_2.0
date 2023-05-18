@@ -129,6 +129,7 @@ varying vec3	vViewPosition;
 varying float 	vRadius;
 varying float 	vPointSize;
 varying float   vPointSourceID;
+varying float   vClassification;
 
 uniform float uFloatArray[500];
 
@@ -868,6 +869,7 @@ void doClipping(){
 
 void main() {
 	vPointSourceID = pointSourceID;
+	vClassification = classification;
 	vec4 mvPosition = modelViewMatrix * vec4(position, 1.0 );
 	vViewPosition = mvPosition.xyz;
 	gl_Position = projectionMatrix * mvPosition;
