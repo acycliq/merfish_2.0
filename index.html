@@ -101,6 +101,29 @@
              font-size: large;
         }
 
+        #GenePanelButton {
+            top: 9px;
+            left: 102px;
+            cursor: pointer;
+        }
+
+        .map-content {
+            position: absolute;
+            z-index: 1000;
+            padding: 4px 7px 5px;
+            border-top: 1px solid #777;
+            border-left: 1px solid #777;
+            border-right: 2px solid #444;
+            border-bottom: 2px solid #444;
+            line-height: 1.6;
+            font-size: 1em;
+            /*font-family: Apercu-Light;*/
+            background: white;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+        }
+
 
     </style>
 
@@ -154,7 +177,13 @@
     <script src="classConfig.js"></script>
     <script src='data/progress.js'></script>
     <script src='./data/streaming-tsv-parser.js'></script>
-    <script src='./merfish_colour_scheme.js'></script>
+    <script src='./glyphConfig.js'></script>
+
+    <div id="GenePanelButton" class="map-content">
+        <a id="legend-link" target="_blank">Gene Panel &raquo;</a>
+<!--        <script>$('#legend').hide();</script>-->
+    </div>
+
 
     <div class="potree_container" style="position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; ">
         <div id="potree_render_area"></div>
@@ -321,69 +350,124 @@
 
         viewer.setFilterFloatArray([]);
 
+		var legend_added = false
+
 
         // let url = './pointclouds/merfish_1.7/octree/cloud.js';
         let url = './pointclouds/merfish_2.0/octree/metadata.json';
 		// let url = 'https://storage.googleapis.com/merfish_data/octree/metadata.json';
         Potree.loadPointCloud(url, 'merfish', onloaded)
 
-		function onloaded(e){
-			let scene = viewer.scene;
-			let pointcloud = e.pointcloud;
-			let material = pointcloud.material;
+		function onloaded(e) {
+            let scene = viewer.scene;
+            let pointcloud = e.pointcloud;
+            let material = pointcloud.material;
 
-			material.size = 0.002;
-			material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
-			material.shape = Potree.PointShape.CIRCLE
-			material.activeAttributeName = "rgba";
-
-
-			scene.addPointCloud(pointcloud);
-			scene.view.position.set(11, 72, 17921);
-			scene.view.lookAt(0, 0, 0);
-
-			run()
-
-		}
-
-		viewer.loadGUI(() => {
-			viewer.setLanguage('en');
-			$("#menu_appearance").next().show();
-			viewer.toggleSidebar();
-		});
+            material.size = 0.002;
+            material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
+            material.shape = Potree.PointShape.CIRCLE
+            material.activeAttributeName = "rgba";
 
 
+            scene.addPointCloud(pointcloud);
+            scene.view.position.set(11, 72, 17921);
+            scene.view.lookAt(0, 0, 0);
 
-        function run() {
-            console.log('app starts');
-            var configSettings = config();
-            configSettings.cellData["name"] = "cellData";
-            // configSettings.geneData["name"] = "geneData";
-            // configSettings.cellBoundaries["name"] = "cellBoundaries";
+            genePaneButton()
 
-            make_package([configSettings.cellData])
-        }
+            localStorage.clear();
+            console.log('Local storage cleared');
 
 
-        function make_package(result) {
-            var workPackage = result.reduce((a, b) => a.concat(b), []);
-            workPackage.forEach(d => d.root_name = strip_url(d.name));
-            workPackage.forEach(d => d.bytes_streamed = 0); //will keep how many bytes have been streamed
-            workPackage.forEach(d => d.data = []);          //will keep the actual data from the flatfiles
-            workPackage.forEach(d => d.data_length = 0);    //will keep the number of points that have been fetched
-            // workPackage = d3.map(workPackage, d => d.name.split('.')[0]);
-            // workPackage = workPackage.map(d => [d.name, d.download_url, d.size]);
-            data_loader(workPackage);
+            // this will be watching if something has been saved to local storage. If yes then it
+            // triggers some action. It acts as an intermediate layer to pass communication between the datatables grid and
+            // the viewer. On another browser tab, user selection on the checkboxes results in data get saved on local storage.
+            // This is picked up here, the javacript code reads the selected values and triggers the appropriate action
+            var storageMonitor = function () {
+                return function () {
+                    var state = JSON.parse(localStorage['updated_state']);
+                    var enter = state.enter, // data to add
+                        exit = state.exit;   // data to remove
 
-            console.log(result)
-        }
+                    exit.forEach(d => {
+                        console.log(d)
+                        viewer.setFilterFloatArray([210])
+                        var glyphname = glyphSettings().filter(el => el.gene === d)[0].glyphName
+                        var glyph_id = Object.values(viewer.classifications).findIndex(d => d.name===glyphname)
+                        viewer.hideGenesFilter([glyph_id])
+                    });
 
-        function strip_url(d) {
-            // if the url has / get the last substring
-            var fName = d.substring(d.lastIndexOf('/')+1);
 
-            // then strip the extension and return the value
-            return fName.split('.')[0]
+                    enter.forEach(d => {
+                        console.log(d)
+                        var glyphname = glyphSettings().filter(el => el.gene === d)[0].glyphName
+                        var glyph_id = Object.values(viewer.classifications).findIndex(d => d.name===glyphname)
+                        viewer.showGenesFilter([glyph_id])
+                    });
+                }();
+            }
+            $(window).on("storage", storageMonitor);
+
+
+            run()
+
+
+            function genePaneButton() {
+                var legendLink = document.querySelector(`#legend-link`);
+
+                if (!legend_added) {
+                    legendLink.addEventListener(`click`, () => {
+                        // Opens the page and stores the opened window instance
+                        legendWindow = window.open(`./genes_datatable.html`);
+                        // legendWindow = window.open('./viewer/genes_datatable.html', '_blank','toolbar=yes');
+
+                    });
+                }
+                legend_added = true;
+
+                $('#legend').show()
+                console.log('legend added')
+            }
+
+            viewer.loadGUI(() => {
+                viewer.setLanguage('en');
+                $("#menu_appearance").next().show();
+                viewer.toggleSidebar();
+            });
+
+
+            function run() {
+                console.log('app starts');
+                var configSettings = config();
+                configSettings.cellData["name"] = "cellData";
+                // configSettings.geneData["name"] = "geneData";
+                // configSettings.cellBoundaries["name"] = "cellBoundaries";
+
+                make_package([configSettings.cellData])
+            }
+
+
+            function make_package(result) {
+                var workPackage = result.reduce((a, b) => a.concat(b), []);
+                workPackage.forEach(d => d.root_name = strip_url(d.name));
+                workPackage.forEach(d => d.bytes_streamed = 0); //will keep how many bytes have been streamed
+                workPackage.forEach(d => d.data = []);          //will keep the actual data from the flatfiles
+                workPackage.forEach(d => d.data_length = 0);    //will keep the number of points that have been fetched
+                // workPackage = d3.map(workPackage, d => d.name.split('.')[0]);
+                // workPackage = workPackage.map(d => [d.name, d.download_url, d.size]);
+                data_loader(workPackage);
+
+                console.log(result)
+            }
+
+            function strip_url(d) {
+                // if the url has / get the last substring
+                var fName = d.substring(d.lastIndexOf('/') + 1);
+
+                // then strip the extension and return the value
+                return fName.split('.')[0]
+            }
+
         }
 
 

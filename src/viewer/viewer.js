@@ -740,6 +740,33 @@ export class Viewer extends EventDispatcher{
 		this.dispatchEvent({'type': 'filter_point_source_id_range_changed', 'viewer': this});
 	}
 
+	showGenes(gene_ids){
+		// if negtive, the gene at the corrsponding position will NOT be clipped
+		var clip_genes = [];
+		if (gene_ids.length > 0){
+			for (let i=0; i<500; i++){clip_genes[i] = i}
+			gene_ids.map((d,i) => {clip_genes[d] = -1.0})
+		}
+		else{
+			for (let i=0; i<500; i++){clip_genes[i] = -1.0}
+		}
+		return clip_genes
+	}
+
+	showGenesFilter(gene_ids){
+		this.filterFloatArray = this.showGenes(gene_ids)
+		console.log('Showing only gene ids:' + gene_ids)
+		this.dispatchEvent({'type': 'filter_cell_ids_clipping_changed', 'viewer': this});
+	}
+
+	hideGenesFilter(gene_ids){
+		var showing = this.showGenes(gene_ids)
+		var hiding = showing.map((d, i) => d<0? i: -1)
+		this.filterFloatArray = hiding
+		console.log('Hiding gene ids:' + gene_ids)
+		this.dispatchEvent({'type': 'filter_cell_ids_clipping_changed', 'viewer': this});
+	}
+
 	setFilterFloatArray(gene_ids){
 		// If you pass-in an empty array then all spots will be rendered.
 		// The function makes an array with length 500. If an element is -1.0 then the gene id that corresponds to
