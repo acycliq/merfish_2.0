@@ -74,11 +74,14 @@ void main() {
         }
         else {
             float cc = u*u + v*v;
-            if(cc > 1.0){
-                discard;
-            }
+//             if(cc > 1.0){
+//                 discard;
+//             }
             if(vClassification == 1.0){
             // draw the circle glyph
+                if(cc > 1.0){
+                    discard;
+                }
                 if(cc < 0.65){
                     discard;
                 }
