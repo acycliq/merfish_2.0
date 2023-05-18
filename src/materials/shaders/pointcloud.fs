@@ -136,9 +136,13 @@ void main() {
 
             if (vClassification == 5.0){
             // draw the point glyph
-                if(cc < 0.3){
+                if(cc > 0.35){
                     discard;
                 }
+                if(cc < 0.05){
+                    discard;
+                }
+
 
             }
 
